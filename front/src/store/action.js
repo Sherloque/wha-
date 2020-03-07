@@ -18,6 +18,28 @@ export const logoutUser = () => ({
 }, history.push("/"))
 
 
+export const getVacancies = vacancies => ({
+    type: 'GET_VACANCIES',
+    payload: vacancies
+})
+
+export const getRecruitersVacancies = vacancies => ({
+    type: 'GET_RECRUITERS_VACANCIES',
+    payload: vacancies
+})
+
+export const getStudents = students => ({
+    type:'GET_STUDENTS',
+    payload:students
+})
+
+
+export const getNews = news => ({
+    type: 'GET_NEWS',
+    payload: news
+})
+
+
 
 export const logUser = (login, password) => {
     return dispatch => {
@@ -83,19 +105,112 @@ export const signRecruiter = (email, firstname, lastname, phonenumber, password,
     }
 }
 
-export const createVacancy = (vacancyName, description, firmScope, firmLogo, firmName, address, contactNumber, email, website) => {
-    let data ={
-        vacancyName, description, firmScope, firmLogo, firmName, address, contactNumber, email, website
+export const createVacancy = (vacancyName, description, firmScope, firmLogo, firmName, address, contactNumber, email, website, status) => {
+    let data = {
+        vacancyName, description, firmScope, firmLogo, firmName, address, contactNumber, email, website, status
     }
     return dispatch => {
         return axios.post("/createvacancy", data, {
-           headers:header
+            headers: header
+        })
+            .then(response => {
+                console.log(response)
+                dispatch({ type: "VACANCY_CREATED" })
+                history.push('/')
+            }).catch(error => {
+                alert(error)
+            })
+    }
+}
+
+
+export const fetchVacancies = () => {
+    return dispatch => {
+        return axios.get("/fetchvacancies", {
+            headers:header
         })
         .then(response => {
             console.log(response)
-            dispatch({ type: "VERIFIED_RECRUITER" })
-        }).catch(error => {
-            alert(error)
+            dispatch(getVacancies(response))
         })
+    }
 }
+
+export const fetchStudents = () => {
+    return dispatch => {
+        return axios.get("/fetchstudents", {
+            headers:header
+        })
+        .then(response => {
+            dispatch(getStudents(response))
+        })
+    }
+}
+
+
+export const fetchNews = () => {
+    return dispatch => {
+        return axios.get('/fetchnews', {
+            headers: header
+        })
+            .then(response => {
+                console.log(response)
+                dispatch(getNews(response.data))
+            }).catch(error => {
+                alert(error.response.data)
+            })
+    }
+}
+
+export const changeStudentInfo = (id, email, password) => {
+    let data = {
+        id, email, password
+    }
+    return dispatch => {
+        return axios.post("/changestudentinfo", data, {
+            headers: header
+            })
+            .then(response => {
+                console.log(response)
+                localStorage.setItem("token", response.data.token)
+                dispatch(loginUser(response.data.studentInfo))
+                history.push('/')
+            }).catch(error => {
+                alert(error)
+            })
+    }
+}
+
+export const changeRecruiterInfo = (id, password) => {
+    let data = {
+        id, password
+    }
+    return dispatch => {
+        return axios.post("/changerecruiterinfo", data, {
+            headers: header
+            })
+            .then(response => {
+                console.log(response)
+                localStorage.setItem("token", response.data.token)
+                dispatch(loginUser(response.data.recruiterInfo))
+                history.push('/')
+            }).catch(error => {
+                alert(error)
+            })
+    }
+}
+
+export const fetchRecruitersVacancies = (email) => {
+    let data = {
+        email
+    }
+    return dispatch => {
+        return axios.post('/fetchrecruitersvacancies', data, {
+            headers:header
+        })
+        .then(response => {
+            console.log(response)
+            dispatch(getRecruitersVacancies(response))
+        })
+    }
 }

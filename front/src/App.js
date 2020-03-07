@@ -8,6 +8,11 @@ import MainPage from './MainPage/MainPage';
 import SignUpPage from './SignUpPage/SignUpPage';
 import LoginPage from './LoginPage/LoginPage';
 import CreateVacancyPage from './CreateVacancyPage/CreateVacancyPage';
+import VacanciesPage from './VacanciesPage/VacanciesPage';
+import StudentsPage from './StudentsPage/StudentsPage'
+import NewsPage from './NewsPage/NewsPage'
+import ProfilePage from './ProfilePage/ProfilePage'
+
 
 function App() {
   return (
@@ -18,6 +23,10 @@ function App() {
         <Route path="/signup" component={SignUpPage} exact />
         <Route path="/login" component={LoginPage} exact />
         <Route path="/createvacancy" component ={CreateVacancyPage} exact />
+        <Route path="/vacancies" component ={VacanciesPage} exact />
+        <Route path="/students" component = {StudentsPage} exact />
+        <Route path="/news" component = {NewsPage} exact />
+        <Route path="/profile" component = {ProfilePage} exact />
         </div>
       </Router>
     </Provider>

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import history from '../history/history';
 import jwt_decode from 'jwt-decode';
 import { logoutUser } from '../store/action.js'
-import { CreateVacancyPage } from '../CreateVacancyPage/CreateVacancyPage.js'
 
 
 const mapStateToProps = store => ({
@@ -16,22 +15,34 @@ const mapStateToProps = store => ({
 
 class MainPage extends React.Component {
     render() {
-        return (
-            <div>
-                {(localStorage.token) ? (
+        if (localStorage.token)
+            return (
+                <div>
                     <div className="box"><h1>Привет, {jwt_decode(localStorage.token).sub.firstname}</h1>
                         <button className="mainpage-logout-btn" onClick={logoutUser}>Выйти</button>
                     </div>
-
-                ) : (
-                        <div className="main-box">
-                            <button className="mainpage-login-btn"><Link to="/login" style={{ color: "white", textDecoration: 'none' }}>Войти</Link></button>
-                            <button className="mainpage-signup-btn"><Link to="/signup" style={{ color: "white", textDecoration: 'none' }}>Зарегистрироваться</Link></button>
-                        </div>
-                    )}
-                {(jwt_decode(localStorage.token).sub.role === "recruiter") ? (<button><Link to="/createvacancy" style={{ color: "white", textDecoration: 'none' }}>Создать вакансию </Link></button>) : (null)}
-            </div>
-        );
+                    {(jwt_decode(localStorage.token).sub.role === "recruiter") ? (
+                        <>
+                            <button><Link to="/createvacancy" style={{ color: "white", textDecoration: 'none' }}>Создать вакансию </Link></button>
+                            <button><Link to="/students" style={{ color: "white", textDecoration: 'none' }}>Студенты</Link></button>
+                        </>
+                    ) : (
+                            null
+                        )}
+                    <button><Link to="/profile" style={{ color: "white", textDecoration: 'none' }}>Профиль</Link></button>
+                    <button className=''><Link to="/news" style={{ color: "white", textDecoration: 'none' }}>Новости</Link></button>
+                    <button className=''><Link to="/vacancies" style={{ color: "white", textDecoration: 'none' }}>Вакансии</Link></button>
+                    <button className=''><Link to="" style={{ color: "white", textDecoration: 'none' }}>Полезная информация</Link></button>
+                </div>
+            );
+        else {
+            return (
+                <div className="main-box">
+                    <button className="mainpage-login-btn"><Link to="/login" style={{ color: "white", textDecoration: 'none' }}>Войти</Link></button>
+                    <button className="mainpage-signup-btn"><Link to="/signup" style={{ color: "white", textDecoration: 'none' }}>Зарегистрироваться</Link></button>
+                </div>
+            )
+        }
     }
 
 }

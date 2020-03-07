@@ -52,7 +52,7 @@ class CreateVacancyPage extends React.Component {
                 <input className="" type="text" value={this.state.contactNumber} onChange={this.onChange7} placeholder="контактный телефон"></input>
                 <input className="" type="text" value={this.state.email} onChange={this.onChange8} placeholder="email"></input>
                 <input className="" type="text" value={this.state.website} onChange={this.onChange9} placeholder="веб сайт"></input>
-                <button onClick ={() => {}}>Отправить</button>
+                <button onClick ={() => {this.props.onSend(this.state.vacancyName, this.state.description, this.state.firmScope, this.state.firmLogo, this.state.firnName, this.state.address, this.state.contactNumber, this.state.email, this.state.website, "pending")}}>Отправить</button>
             </div>
         );
     }
